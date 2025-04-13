@@ -19,12 +19,13 @@ jobs:
     runs-on: ubuntu-latest
     # Define environment variables to be used across the steps
     env:
-      NYPD_DATABASE_50_A_OFFICERS: https://www.50-a.org/data/nypd/officers.csv # URL of the NYPD database file
-      NYPD_DATABASE_50_A_RANKS: https://www.50-a.org/data/nypd/ranks.csv # URL of the NYPD ranks file
-      NYPD_DATABASE_50_A_DISCIPLINE: https://www.50-a.org/data/nypd/discipline.csv # URL of the NYPD discipline file
-      NYPD_DATABASE_50_A_DOCUMENTS: https://www.50-a.org/data/nypd/documents.csv # URL of the NYPD documents file
-      NYPD_DATABSE_50_A_TRAINING: https://www.50-a.org/data/nypd/training.csv # URL of the NYPD training file
-      NYPD_DATABSE_50_A_AWARDS: https://www.50-a.org/data/nypd/awards.csv # URL of the NYPD awards file
+      # Full URLs for each file
+      NYPD_DATABASE_OFFICERS_URL: https://www.50-a.org/data/nypd/officers.csv
+      NYPD_DATABASE_RANKS_URL: https://www.50-a.org/data/nypd/ranks.csv
+      NYPD_DATABASE_DISCIPLINE_URL: https://www.50-a.org/data/nypd/discipline.csv
+      NYPD_DATABASE_DOCUMENTS_URL: https://www.50-a.org/data/nypd/documents.csv
+      NYPD_DATABASE_TRAINING_URL: https://www.50-a.org/data/nypd/training.csv
+      NYPD_DATABASE_AWARDS_URL: https://www.50-a.org/data/nypd/awards.csv
 
     steps:
       # Check out the repository code
@@ -33,19 +34,34 @@ jobs:
 
       # Install the required dependencies
       - name: Install dependencies
-        run: sudo apt-get update -y && sudo apt-get install curl sudo -y # Update package list and install curl
+        run: sudo apt-get update -y && sudo apt-get install curl -y # Update package list and install curl
 
-      # Download the NYPD database files
-      - name: Download NYPD database files
-        run: sudo curl -L $NYPD_DATABASE_50_A_OFFICERS -o nypd_officers.csv && \
-             sudo curl -L $NYPD_DATABASE_50_A_RANKS -o nypd_ranks.csv && \
-             sudo curl -L $NYPD_DATABASE_50_A_DISCIPLINE -o nypd_discipline.csv && \
-             sudo curl -L $NYPD_DATABASE_50_A_DOCUMENTS -o nypd_documents.csv && \
-             sudo curl -L $NYPD_DATABSE_50_A_TRAINING -o nypd_training.csv && \
-             sudo curl -L $NYPD_DATABSE_50_A_AWARDS -o nypd_awards.csv # Download the NYPD database files
+      # Download the NYPD officers file
+      - name: Download NYPD officers file
+        run: curl -L $NYPD_DATABASE_OFFICERS_URL -o nypd_officers.csv
 
-      # Step Commit and push the updated named.cache file to the repository
-      - name: Push updated named.cache
+      # Download the NYPD ranks file
+      - name: Download NYPD ranks file
+        run: curl -L $NYPD_DATABASE_RANKS_URL -o nypd_ranks.csv
+
+      # Download the NYPD discipline file
+      - name: Download NYPD discipline file
+        run: curl -L $NYPD_DATABASE_DISCIPLINE_URL -o nypd_discipline.csv
+
+      # Download the NYPD documents file
+      - name: Download NYPD documents file
+        run: curl -L $NYPD_DATABASE_DOCUMENTS_URL -o nypd_documents.csv
+
+      # Download the NYPD training file
+      - name: Download NYPD training file
+        run: curl -L $NYPD_DATABASE_TRAINING_URL -o nypd_training.csv
+
+      # Download the NYPD awards file
+      - name: Download NYPD awards file
+        run: curl -L $NYPD_DATABASE_AWARDS_URL -o nypd_awards.csv
+
+      # Commit and push the updated files
+      - name: Push updated files
         run: |
           # Configure Git user details for the commit
           git config user.name "github-actions"
