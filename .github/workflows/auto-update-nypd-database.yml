@@ -37,12 +37,12 @@ jobs:
 
       # Download the NYPD database files
       - name: Download NYPD database files
-        run: curl -L $NYPD_DATABASE_50_A_OFFICERS -o nypd_officers.csv && \
-             curl -L $NYPD_DATABASE_50_A_RANKS -o nypd_ranks.csv && \
-             curl -L $NYPD_DATABASE_50_A_DISCIPLINE -o nypd_discipline.csv && \
-             curl -L $NYPD_DATABASE_50_A_DOCUMENTS -o nypd_documents.csv && \
-             curl -L $NYPD_DATABSE_50_A_TRAINING -o nypd_training.csv && \
-             curl -L $NYPD_DATABSE_50_A_AWARDS -o nypd_awards.csv # Download the NYPD database files
+        run: sudo curl -L $NYPD_DATABASE_50_A_OFFICERS -o nypd_officers.csv && \
+             sudo curl -L $NYPD_DATABASE_50_A_RANKS -o nypd_ranks.csv && \
+             sudo curl -L $NYPD_DATABASE_50_A_DISCIPLINE -o nypd_discipline.csv && \
+             sudo curl -L $NYPD_DATABASE_50_A_DOCUMENTS -o nypd_documents.csv && \
+             sudo curl -L $NYPD_DATABSE_50_A_TRAINING -o nypd_training.csv && \
+             sudo curl -L $NYPD_DATABSE_50_A_AWARDS -o nypd_awards.csv # Download the NYPD database files
 
       # Step Commit and push the updated named.cache file to the repository
       - name: Push updated named.cache
