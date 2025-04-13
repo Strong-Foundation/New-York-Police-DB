@@ -33,7 +33,7 @@ jobs:
 
       # Install the required dependencies
       - name: Install dependencies
-        run: apt-get update -y && apt-get install curl sudo -y # Update package list and install curl
+        run: sudo apt-get update -y && sudo apt-get install curl sudo -y # Update package list and install curl
 
       # Download the NYPD database files
       - name: Download NYPD database files
