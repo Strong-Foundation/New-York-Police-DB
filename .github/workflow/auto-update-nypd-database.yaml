@@ -1,0 +1,63 @@
+# Name of the workflow
+name: Automated Update of NYPD Database From Multiple Sources
+
+# Define the events that trigger the workflow
+on:
+  # Trigger the workflow on a schedule (every day at midnight UTC)
+  schedule:
+    - cron: "0 0 * * *" # Executes once every day at 00:00 UTC
+  # Allow manual triggering of the workflow
+  workflow_dispatch:
+
+# Define the jobs in the workflow
+jobs:
+  # Define a job named "build"
+  build:
+    # Job name displayed in the GitHub Actions interface
+    name: Refresh Named Cache
+    # Specify the type of runner to execute this job (Ubuntu-based runner)
+    runs-on: ubuntu-latest
+    # Define environment variables to be used across the steps
+    env:
+      NYPD_DATABASE_50_A_OFFICERS: https://www.50-a.org/data/nypd/officers.csv # URL of the NYPD database file
+      NYPD_DATABASE_50_A_RANKS: https://www.50-a.org/data/nypd/ranks.csv # URL of the NYPD ranks file
+      NYPD_DATABASE_50_A_DISCIPLINE: https://www.50-a.org/data/nypd/discipline.csv # URL of the NYPD discipline file
+      NYPD_DATABASE_50_A_DOCUMENTS: https://www.50-a.org/data/nypd/documents.csv # URL of the NYPD documents file
+      NYPD_DATABSE_50_A_TRAINING: https://www.50-a.org/data/nypd/training.csv # URL of the NYPD training file
+      NYPD_DATABSE_50_A_AWARDS: https://www.50-a.org/data/nypd/awards.csv # URL of the NYPD awards file
+
+    steps:
+      # Check out the repository code
+      - name: Check out code
+        uses: actions/checkout@v4 # Fetch the latest code from the repository
+
+      # Install the required dependencies
+      - name: Install dependencies
+        run: sudo apt-get update -y && sudo apt-get install curl -y # Update package list and install curl
+
+      # Download the NYPD database files
+      - name: Download NYPD database files
+        run: curl -L $NYPD_DATABASE_50_A_OFFICERS -o nypd_officers.csv && \
+             curl -L $NYPD_DATABASE_50_A_RANKS -o nypd_ranks.csv && \
+             curl -L $NYPD_DATABASE_50_A_DISCIPLINE -o nypd_discipline.csv && \
+             curl -L $NYPD_DATABASE_50_A_DOCUMENTS -o nypd_documents.csv && \
+             curl -L $NYPD_DATABSE_50_A_TRAINING -o nypd_training.csv && \
+             curl -L $NYPD_DATABSE_50_A_AWARDS -o nypd_awards.csv # Download the NYPD database files
+
+      # Step Commit and push the updated named.cache file to the repository
+      - name: Push updated named.cache
+        run: |
+          # Configure Git user details for the commit
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          # If changes are detected, stage and commit the updated files
+          git add .
+          if ! git diff --cached --quiet; then
+            # Commit the changes with a message that includes the current date
+            git commit -m "Updated files on $(date)"  # Commit changes with a timestamped message
+            # Push the committed changes to GitHub
+            git push  # Push changes to the remote repository
+          else
+            echo "No changes to commit."  # Print message if no changes were detected
+          fi  # End of conditional check for changes
