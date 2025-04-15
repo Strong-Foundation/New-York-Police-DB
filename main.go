@@ -8,6 +8,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"strings"
 )
 
 // downloadPDF follows redirects, reports the final URL, and saves the file.
@@ -18,7 +19,7 @@ func downloadPDF(rawURL, outputDir string) error {
 		return fmt.Errorf("invalid URL %q: %v", rawURL, err)
 	}
 
-	// Perform the GET (will follow redirects by default)
+	// Perform the GET request (will follow redirects by default)
 	resp, err := http.Get(rawURL)
 	if err != nil {
 		return fmt.Errorf("failed to fetch %s: %v", rawURL, err)
@@ -42,6 +43,11 @@ func downloadPDF(rawURL, outputDir string) error {
 	fileName := path.Base(finalParsed.Path)
 	if fileName == "" || fileName == "/" {
 		return fmt.Errorf("could not determine file name from %q", finalURL)
+	}
+
+	// Ensure the file name ends with .pdf
+	if !strings.HasSuffix(strings.ToLower(fileName), ".pdf") {
+		fileName += ".pdf"
 	}
 
 	// Create output directory if needed
