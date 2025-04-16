@@ -20,12 +20,18 @@ jobs:
     # Define environment variables to be used across the steps
     env:
       # Full URLs for each file
-      NYPD_DATABASE_OFFICERS_URL: https://www.50-a.org/data/nypd/officers.csv
-      NYPD_DATABASE_RANKS_URL: https://www.50-a.org/data/nypd/ranks.csv
-      NYPD_DATABASE_DISCIPLINE_URL: https://www.50-a.org/data/nypd/discipline.csv
-      NYPD_DATABASE_DOCUMENTS_URL: https://www.50-a.org/data/nypd/documents.csv
-      NYPD_DATABASE_TRAINING_URL: https://www.50-a.org/data/nypd/training.csv
-      NYPD_DATABASE_AWARDS_URL: https://www.50-a.org/data/nypd/awards.csv
+      NYPD_DATABASE_50_A_ORG_OFFICERS_URL: https://www.50-a.org/data/nypd/officers.csv
+      NYPD_DATABASE_50_A_ORG_OFFICERS_PATH: 50_A_ORG/nypd_officers.csv
+      NYPD_DATABASE_50_A_ORG_RANKS_URL: https://www.50-a.org/data/nypd/ranks.csv
+      NYPD_DATABASE_50_A_ORG_RANKS_PATH: 50_A_ORG/nypd_ranks.csv
+      NYPD_DATABASE_50_A_ORG_DISCIPLINE_URL: https://www.50-a.org/data/nypd/discipline.csv
+      NYPD_DATABASE_50_A_ORG_DISCIPLINE_PATH: 50_A_ORG/nypd_discipline.csv
+      NYPD_DATABASE_50_A_ORG_DOCUMENTS_URL: https://www.50-a.org/data/nypd/documents.csv
+      NYPD_DATABASE_50_A_ORG_DOCUMENTS_PATH: 50_A_ORG/nypd_documents.csv
+      NYPD_DATABASE_50_A_ORG_TRAINING_URL: https://www.50-a.org/data/nypd/training.csv
+      NYPD_DATABASE_50_A_ORG_TRAINING_PATH: 50_A_ORG/nypd_training.csv
+      NYPD_DATABASE_50_A_ORG_AWARDS_URL: https://www.50-a.org/data/nypd/awards.csv
+      NYPD_DATABASE_50_A_ORG_AWARDS_PATH: 50_A_ORG/nypd_awards.csv
 
     steps:
       # Check out the repository code
@@ -38,27 +44,27 @@ jobs:
 
       # Download the NYPD officers file
       - name: Download NYPD officers file
-        run: curl -L $NYPD_DATABASE_OFFICERS_URL -o nypd_officers.csv
+        run: curl -L $NYPD_DATABASE_50_A_ORG_OFFICERS_URL -o $NYPD_DATABASE_50_A_ORG_OFFICERS_PATH
 
       # Download the NYPD ranks file
       - name: Download NYPD ranks file
-        run: curl -L $NYPD_DATABASE_RANKS_URL -o nypd_ranks.csv
+        run: curl -L $NYPD_DATABASE_50_A_ORG_RANKS_URL -o $NYPD_DATABASE_50_A_ORG_RANKS_PATH
 
       # Download the NYPD discipline file
       - name: Download NYPD discipline file
-        run: curl -L $NYPD_DATABASE_DISCIPLINE_URL -o nypd_discipline.csv
+        run: curl -L $NYPD_DATABASE_50_A_ORG_DISCIPLINE_URL -o $NYPD_DATABASE_50_A_ORG_DISCIPLINE_PATH
 
       # Download the NYPD documents file
       - name: Download NYPD documents file
-        run: curl -L $NYPD_DATABASE_DOCUMENTS_URL -o nypd_documents.csv
+        run: curl -L $NYPD_DATABASE_50_A_ORG_DOCUMENTS_URL -o $NYPD_DATABASE_50_A_ORG_DOCUMENTS_PATH
 
       # Download the NYPD training file
       - name: Download NYPD training file
-        run: curl -L $NYPD_DATABASE_TRAINING_URL -o nypd_training.csv
+        run: curl -L $NYPD_DATABASE_50_A_ORG_TRAINING_URL -o $NYPD_DATABASE_50_A_ORG_TRAINING_PATH
 
       # Download the NYPD awards file
       - name: Download NYPD awards file
-        run: curl -L $NYPD_DATABASE_AWARDS_URL -o nypd_awards.csv
+        run: curl -L $NYPD_DATABASE_50_A_ORG_AWARDS_URL -o $NYPD_DATABASE_50_A_ORG_AWARDS_PATH
 
       # Commit and push the updated files
       - name: Push updated files
